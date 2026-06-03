@@ -12,8 +12,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Send APK to n8n webhook
+      - name: Find and send APK to n8n webhook
         run: |
+          APK_PATH=$(find . -name "*.apk" | head -n 1)
+          echo "Found APK: $APK_PATH"
           curl -X POST "${{ secrets.N8N_WEBHOOK_URL }}" \
-            -F "data=@app.apk" \
+            -F "data=@$APK_PATH" \
             -H "Accept: application/json"
