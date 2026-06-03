@@ -1,0 +1,19 @@
+name: Send APK to n8n
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  send-apk:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Send APK to n8n webhook
+        run: |
+          curl -X POST "${{ secrets.N8N_WEBHOOK_URL }}" \
+            -F "data=@app.apk" \
+            -H "Accept: application/json"
